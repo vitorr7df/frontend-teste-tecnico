@@ -1,10 +1,15 @@
 // import logo from './logo.svg';
 import './App.css';
-import UsersList from './pages/UserList';
+// import UsersList from './pages/UserList';
+import AuthPage from './components/AuthPage';
 
-const App = () => {
-    return <UsersList />;
-};
+function App() {
+    return (
+        <div className="App">
+            <AuthPage />
+        </div>
+    );
+}
 
 
 export default App;
