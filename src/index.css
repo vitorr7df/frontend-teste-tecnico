@@ -37,3 +37,14 @@ body[data-theme="light"] {
   align-items: center;
   z-index: 9999;
 }
+
+.theme-toggle {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  margin: 0;
+}
+
+.tituloCrud {
+  padding-top: 50px;
+}

@@ -45,7 +45,7 @@ function App() {
             <CssBaseline />
             <Router>
                 <div className="App">
-                    <IconButton onClick={toggleTheme} color="inherit">
+                    <IconButton className="theme-toggle" onClick={toggleTheme} color="inherit">
                         {darkMode ? <WbSunny /> : <NightlightRound />}
                     </IconButton>
 

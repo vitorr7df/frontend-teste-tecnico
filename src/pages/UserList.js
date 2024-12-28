@@ -114,11 +114,12 @@ const UsersList = ({ onLoading }) => {
 
     useEffect(() => {
         getUsers();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
         <Container>
-            <Typography variant="h4" gutterBottom>
+            <Typography className='tituloCrud' variant="h4" gutterBottom>
                 Crud de Usuários
             </Typography>
 
