@@ -1,23 +1,22 @@
 import React, { useState } from 'react';
-import LoginForm from './LoginForm';  // Importando o componente de login
-import SignupForm from './SignupForm';  // Importando o componente de cadastro
-import { Button, Box, Typography } from '@mui/material';
+import LoginForm from './LoginForm';
+import SignupForm from './SignupForm';
+import { Button, Box } from '@mui/material';
 
-const AuthPage = () => {
-    const [isLogin, setIsLogin] = useState(true);  // Estado para alternar entre login e cadastro
+const AuthPage = ({ onLoading }) => {
+    const [isLogin, setIsLogin] = useState(true);
 
     const toggleForm = () => {
-        setIsLogin(!isLogin);  // Função que alterna entre as telas
+        setIsLogin(!isLogin);
     };
 
     return (
         <Box sx={{ textAlign: 'center', marginTop: 5 }}>
-            <Typography variant="h4" gutterBottom>
-                {isLogin ? 'Login' : 'Create an Account'}  {/* Título dinâmico */}
-            </Typography>
-            {isLogin ? <LoginForm /> : <SignupForm />}  {/* Exibe o formulário de login ou cadastro */}
+            <img src={require('../assets/1300231.svg').default} alt="Carro" className="car-icon" />
+
+            {isLogin ? <LoginForm onLoading={onLoading} /> : <SignupForm onLoading={onLoading} />}  {/* Exibe o formulário de login ou cadastro */}
             <Button onClick={toggleForm} sx={{ mt: 2 }}>
-                {isLogin ? 'Don’t have an account? Sign up' : 'Already have an account? Login'}  {/* Botão para alternar */}
+                {isLogin ? 'Criar conta' : 'Já tem uma conta? Faça Login'}  {/* Botão para alternar */}
             </Button>
         </Box>
     );

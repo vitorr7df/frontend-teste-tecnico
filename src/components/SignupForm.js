@@ -1,35 +1,47 @@
 import React, { useState } from 'react';
 import { TextField, Button, Typography, Box, Container } from '@mui/material';
-import { ToastContainer, toast } from 'react-toastify'; // Importando o ToastContainer e a função toast
+import { ToastContainer, toast } from 'react-toastify';
 import api from '../services/api';
-import 'react-toastify/dist/ReactToastify.css'; // Estilos necessários para o Toastify
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
-const SignupForm = () => {
+const SignupForm = ({ onLoading }) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const navigate = useNavigate();
 
-        // Validação das senhas
+    const insertUser = async (e) => {
+        e.preventDefault();
+        onLoading(true);
+
         if (password !== confirmPassword) {
-            toast.error("Passwords don't match"); // Exibindo erro com Toast
-            return;
+            toast.error("As senhas não coincidem");
         }
 
         try {
             const response = await api.post('/users', {
                 name,
                 email,
-                password, // Enviando a senha também (certifique-se de criptografar a senha no backend!)
+                password,
             });
-            toast.success("Usuário cadastrado com sucesso!"); // Exibindo sucesso com Toast
+            console.log(response.data);
+            toast.success("Usuário cadastrado com sucesso!");
+            navigate('/');
+
+            setName('');
+            setEmail('');
+            setPassword('');
+            setConfirmPassword('');
         } catch (err) {
-            toast.error('Erro ao cadastrar usuário. Tente novamente.'); // Exibindo erro com Toast
+            toast.error('Erro ao cadastrar usuário. Tente novamente.');
+        } finally {
+            onLoading(false);
         }
     };
+
 
     return (
         <Container maxWidth="xs">
@@ -44,12 +56,12 @@ const SignupForm = () => {
                     boxShadow: 3,
                 }}
             >
-                <Typography variant="h5" gutterBottom>
-                    Signup
+                <Typography variant="h6" gutterBottom>
+                    Cadastro
                 </Typography>
-                <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+                <form onSubmit={insertUser} style={{ width: '100%' }}>
                     <TextField
-                        label="Name"
+                        label="Nome"
                         variant="outlined"
                         fullWidth
                         margin="normal"
@@ -66,9 +78,10 @@ const SignupForm = () => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
+                        autoComplete="off"
                     />
                     <TextField
-                        label="Password"
+                        label="Senha"
                         type="password"
                         variant="outlined"
                         fullWidth
@@ -76,9 +89,10 @@ const SignupForm = () => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
+                        autoComplete="new-password"
                     />
                     <TextField
-                        label="Confirm Password"
+                        label="Confirmar senha"
                         type="password"
                         variant="outlined"
                         fullWidth
@@ -86,6 +100,7 @@ const SignupForm = () => {
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         required
+                        autoComplete="new-password"
                     />
                     <Button
                         type="submit"
@@ -93,12 +108,12 @@ const SignupForm = () => {
                         fullWidth
                         sx={{ mt: 2 }}
                     >
-                        Sign Up
+                        Cadastrar
                     </Button>
                 </form>
             </Box>
 
-            {/* Adicionando o ToastContainer, que vai gerenciar as notificações */}
+
             <ToastContainer
                 position="top-right"
                 autoClose={5000}

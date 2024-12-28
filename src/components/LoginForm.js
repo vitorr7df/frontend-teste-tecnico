@@ -1,16 +1,33 @@
 import React, { useState } from 'react';
 import { TextField, Button, Typography, Box, Container } from '@mui/material';
+import api from '../services/api';
+import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const LoginForm = () => {
+const LoginForm = ({ onLoading }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Aqui você pode adicionar a lógica de login (ex.: chamada à API)
-        console.log('Email:', email, 'Password:', password);
-    };
+        onLoading(true);
 
+        try {
+            const response = await api.post('/users/login', {
+                email,
+                password,
+            });
+            const { token } = response.data;
+            localStorage.setItem('authToken', token);
+            navigate('/userlist');
+        } catch (err) {
+            toast.error("Erro ao fazer login");
+        } finally {
+            onLoading(false);
+        }
+    };
     return (
         <Container maxWidth="xs">
             <Box
@@ -24,7 +41,7 @@ const LoginForm = () => {
                     boxShadow: 3,
                 }}
             >
-                <Typography variant="h5" gutterBottom>
+                <Typography variant="h6" gutterBottom>
                     Login
                 </Typography>
                 <form onSubmit={handleSubmit} style={{ width: '100%' }}>
@@ -37,9 +54,10 @@ const LoginForm = () => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
+                        autoComplete="off"
                     />
                     <TextField
-                        label="Password"
+                        label="Senha"
                         type="password"
                         variant="outlined"
                         fullWidth
@@ -47,7 +65,9 @@ const LoginForm = () => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
+                        autoComplete="new-password"
                     />
+
                     <Button
                         type="submit"
                         variant="contained"
@@ -58,6 +78,18 @@ const LoginForm = () => {
                     </Button>
                 </form>
             </Box>
+
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={true}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
         </Container>
     );
 };
