@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import api from '../services/api';
-import { Container, Typography, Button, Table, TableHead, TableRow, TableCell, TableBody, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import { Container, Typography, Button, Table, TableHead, TableRow, TableCell, TableBody, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Tooltip, IconButton } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
@@ -159,13 +161,17 @@ const UsersList = ({ onLoading }) => {
                             <TableCell>{user.id}</TableCell>
                             <TableCell>{user.name}</TableCell>
                             <TableCell>{user.email}</TableCell>
-                            <TableCell>
-                                <Button color="secondary" onClick={() => updateUser(user)}>
-                                    Editar
-                                </Button>
-                                <Button color="error" onClick={() => confirmDelete(user)}>
-                                    Excluir
-                                </Button>
+                            <TableCell >
+                                <Tooltip title="Editar">
+                                    <IconButton color="secondary" onClick={() => updateUser(user)}>
+                                        <EditIcon />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Excluir">
+                                    <IconButton color="error" onClick={() => confirmDelete(user)}>
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </Tooltip>
                             </TableCell>
                         </TableRow>
                     ))}
